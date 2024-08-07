@@ -61,8 +61,9 @@ class Ball(GameSprite):
 
 
 window = display.set_mode((1280, 920))
+
 display.set_caption("Ping-pong")
-background = transform.scale(image.load("Board.png"), (1280, 920))
+background = transform.scale(image.load("game/assets/background.png"), (1280, 920))
 
 # mixer.init()
 # mixer.music.load("galaxy.mp3")
@@ -72,10 +73,10 @@ font.init()
 font1 = font.Font(None, 36)
 lose = font1.render("тебя взяли в плен иноприщеленцы. гг", True, (255, 0, 0))
 
-firstplayer = Player("player1.png", 17, 120, 20, 45, 400)
-secondplayer = Player("player2.png", 17, 120, 20, 1235, 400)
+firstplayer = Player("game/assets/player1.png", 17, 120, 20, 45, 400)
+secondplayer = Player("game/assets/player2.png", 17, 120, 20, 1235, 400)
 
-ballsprite = Ball("Ball.png", 30, 30, 15, 10, 625, 445)
+ballsprite = Ball("game/assets/ball.png", 30, 30, 15, 10, 625, 445)
 
 finish = False
 clock = time.Clock()
