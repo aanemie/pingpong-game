@@ -24,25 +24,25 @@ class Player(GameSprite):
         if direction == "left":
 
             keys_pressed = key.get_pressed()
-            if keys_pressed[K_w] and self.rect.y > 5:
-                self.rect.y += self.speed 
-
-            if keys_pressed[K_s] and self.rect.y < 5:
+            if keys_pressed[K_w] and self.rect.y > 20:
                 self.rect.y -= self.speed 
+
+            if keys_pressed[K_s] and self.rect.y < 780:
+                self.rect.y += self.speed 
 
 
         if direction == "right":
 
             keys_pressed = key.get_pressed()
-            if (keys_pressed[K_RIGHT] and self.rect.x < 910) or (keys_pressed[K_d] and self.rect.x < 910):
-                self.rect.x += self.speed 
+            if keys_pressed[K_UP] and self.rect.y > 20:
+                self.rect.y -= self.speed 
 
-            if (keys_pressed[K_LEFT] and self.rect.x > 5) or (keys_pressed[K_a] and self.rect.x > 5):
-                self.rect.x -= self.speed 
+            if keys_pressed[K_DOWN] and self.rect.y < 780:
+                self.rect.y += self.speed  
 
 window = display.set_mode((1280, 920))
 display.set_caption("Ping-pong")
-background = transform.scale(image.load("background.jpg"), (1280, 920))
+background = transform.scale(image.load("Board.png"), (1280, 920))
 
 # mixer.init()
 # mixer.music.load("galaxy.mp3")
@@ -51,6 +51,11 @@ background = transform.scale(image.load("background.jpg"), (1280, 920))
 font.init()
 font1 = font.Font(None, 36)
 lose = font1.render("тебя взяли в плен иноприщеленцы. гг", True, (255, 0, 0))
+
+firstplayer = Player("player1.png", 17, 120, 13, 45, 400)
+secondplayer = Player("player2.png", 17, 120, 13, 1235, 400)
+
+ballsprite = GameSprite("Ball.png", 30, 30, 20, 625, 445)
 
 finish = False
 clock = time.Clock()
@@ -65,9 +70,13 @@ while flag == True:
     
     if finish != True:
         window.blit(background, (0, 0))
+        firstplayer.reset()
+        firstplayer.update("left")
+        secondplayer.reset()
+        secondplayer.update("right")
+        ballsprite.reset()
 
-
-
+    
 
 
     clock.tick(FPS)
