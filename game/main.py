@@ -40,6 +40,26 @@ class Player(GameSprite):
             if keys_pressed[K_DOWN] and self.rect.y < 780:
                 self.rect.y += self.speed  
 
+
+class Ball(GameSprite):
+    def __init__(self, image1, resolution1, resolution2, speedx, speedy, x1, y1):
+        sprite.Sprite.__init__(self)
+        self.image = transform.scale(image.load(image1), (resolution1, resolution2))
+        self.rect = self.image.get_rect()
+        self.rect.x = x1
+        self.rect.y = y1
+        self.speedx = speedx
+        self.speedy = speedy
+
+    def motion(self, enemy):
+        # self.rect.x += self.speedx
+        # self.rect.y += self.speedy
+
+        if sprite.collide_rect(enemy, self):
+            self.speedx *= -1
+
+
+
 window = display.set_mode((1280, 920))
 display.set_caption("Ping-pong")
 background = transform.scale(image.load("Board.png"), (1280, 920))
@@ -52,10 +72,10 @@ font.init()
 font1 = font.Font(None, 36)
 lose = font1.render("тебя взяли в плен иноприщеленцы. гг", True, (255, 0, 0))
 
-firstplayer = Player("player1.png", 17, 120, 13, 45, 400)
-secondplayer = Player("player2.png", 17, 120, 13, 1235, 400)
+firstplayer = Player("player1.png", 17, 120, 20, 45, 400)
+secondplayer = Player("player2.png", 17, 120, 20, 1235, 400)
 
-ballsprite = GameSprite("Ball.png", 30, 30, 20, 625, 445)
+ballsprite = Ball("Ball.png", 30, 30, 15, 10, 625, 445)
 
 finish = False
 clock = time.Clock()
@@ -75,8 +95,14 @@ while flag == True:
         secondplayer.reset()
         secondplayer.update("right")
         ballsprite.reset()
+        ballsprite.rect.x += ballsprite.speedx
+        ballsprite.rect.y += ballsprite.speedy
 
-    
+        ballsprite.motion(firstplayer)
+        ballsprite.motion(secondplayer)
+
+        if ballsprite.rect.y > 920-40 or ballsprite.rect.y < 1:
+            ballsprite.speedy *= -1
 
 
     clock.tick(FPS)
