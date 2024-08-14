@@ -8,7 +8,14 @@ num_fire = 0
 score1text = 0
 score2text = 0
 
+mixer.init()
+mixer.music.set_volume(0.5)
+mixer.music.load("game/assets/background.mp3")
+mixer.music.play()
 
+ball2platform = mixer.Sound("game/assets/platform.mp3")
+
+ball2window = mixer.Sound("game/assets/window.mp3")
 
 class GameSprite(sprite.Sprite):
     def __init__(self, image1, resolution1, resolution2, speed1, x1, y1):
@@ -62,6 +69,7 @@ class Ball(GameSprite):
 
         if sprite.collide_rect(enemy, self):
             self.speedx *= -1
+            ball2platform.play()
 
             if self.rect.x < 104:
                 score1text += 1
@@ -75,9 +83,7 @@ window = display.set_mode((1280, 920))
 display.set_caption("Ping-pong")
 background = transform.scale(image.load("game/assets/background.png"), (1280, 920))
 
-# mixer.init()
-# mixer.music.load("galaxy.mp3")
-# mixer.music.play()
+
 
 font.init()
 font1 = font.Font(None, 36)
@@ -128,6 +134,7 @@ while flag == True:
 
         if ballsprite.rect.y > 920-40 or ballsprite.rect.y < 1:
             ballsprite.speedy *= -1
+            ball2window.play()
         score1 = font1.render("Счёт: " + str(score1text), True, (255, 255, 255))
         score2 = font1.render("Счёт: " + str(score2text), True, (255, 255, 255))
         window.blit(score1, (10, 10))
