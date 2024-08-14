@@ -5,6 +5,9 @@ lost = 0
 score = 0
 rel_time = False
 num_fire = 0
+score1text = 0
+score2text = 0
+
 
 
 class GameSprite(sprite.Sprite):
@@ -52,12 +55,19 @@ class Ball(GameSprite):
         self.speedy = speedy
 
     def motion(self, enemy):
+        global score1text
+        global score2text
         # self.rect.x += self.speedx
         # self.rect.y += self.speedy
 
         if sprite.collide_rect(enemy, self):
             self.speedx *= -1
 
+            if self.rect.x < 104:
+                score1text += 1
+
+            if self.rect.x > 1154:
+                score2text += 1
 
 
 window = display.set_mode((1280, 920))
@@ -71,12 +81,23 @@ background = transform.scale(image.load("game/assets/background.png"), (1280, 92
 
 font.init()
 font1 = font.Font(None, 36)
-lose = font1.render("тебя взяли в плен иноприщеленцы. гг", True, (255, 0, 0))
+
+lose = font1.render("первый игрок проиграл!", True, (255, 0, 0))
+lose2 = font1.render("второй игрок проиграл!", True, (255, 0, 0))
+
+# score1 = font1.render("Счёт: " + str(score1text), True, (255, 255, 255))
+# score2 = font1.render("Счёт: " + str(score2text), True, (255, 255, 255))
+
 
 firstplayer = Player("game/assets/player1.png", 17, 120, 20, 45, 400)
 secondplayer = Player("game/assets/player2.png", 17, 120, 20, 1235, 400)
 
 ballsprite = Ball("game/assets/ball.png", 30, 30, 15, 10, 625, 445)
+
+
+score_back_left = GameSprite("game/assets/ScoreBar.png", 341, 47, 0, 0, 0)
+score_back_right = GameSprite("game/assets/ScoreBar2.png", 341, 47, 0, 939, 0)
+
 
 finish = False
 clock = time.Clock()
@@ -91,11 +112,14 @@ while flag == True:
     
     if finish != True:
         window.blit(background, (0, 0))
+        
         firstplayer.reset()
         firstplayer.update("left")
         secondplayer.reset()
         secondplayer.update("right")
         ballsprite.reset()
+        score_back_left.reset()
+        score_back_right.reset()
         ballsprite.rect.x += ballsprite.speedx
         ballsprite.rect.y += ballsprite.speedy
 
@@ -104,7 +128,18 @@ while flag == True:
 
         if ballsprite.rect.y > 920-40 or ballsprite.rect.y < 1:
             ballsprite.speedy *= -1
+        score1 = font1.render("Счёт: " + str(score1text), True, (255, 255, 255))
+        score2 = font1.render("Счёт: " + str(score2text), True, (255, 255, 255))
+        window.blit(score1, (10, 10))
+        window.blit(score2, (1180, 10))
 
+        if ballsprite.rect.x < 10:
+            finish == True
+            window.blit(lose, (50, 50))
+
+        if ballsprite.rect.x > 1260:
+            finish == True
+            window.blit(lose2, (930, 50))
 
     clock.tick(FPS)
     display.update()
