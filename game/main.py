@@ -7,6 +7,7 @@ rel_time = False
 num_fire = 0
 score1text = 0
 score2text = 0
+game_start = kub()
 
 mixer.init()
 mixer.music.set_volume(0.5)
@@ -128,6 +129,14 @@ while flag == True:
         score_back_right.reset()
         ballsprite.rect.x += ballsprite.speedx
         ballsprite.rect.y += ballsprite.speedy
+
+        current_time = kub()
+        matt_time = current_time - game_start
+        minutes = int(matt_time // 60)
+        seconds = int(matt_time % 60)
+        sugoma = font1.render(f"0{minutes}:{seconds}", True, (255, 255, 255))
+        window.blit(sugoma, (623, 10))
+
 
         ballsprite.motion(firstplayer)
         ballsprite.motion(secondplayer)
